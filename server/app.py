@@ -16,6 +16,9 @@ def show_session(key):
 
     if key == 'count':
         session['count'] += 1
+    
+    if key == 'hello':
+        session['hello'] = 'Hello, World!'
 
     response = make_response(jsonify({
         'session': {
@@ -26,6 +29,18 @@ def show_session(key):
         'cookies': [{cookie: request.cookies[cookie]}
             for cookie in request.cookies],
     }), 200)
+
+    return response
+
+@app.route("/crumbs", methods=['GET'])
+def follow_crumbs():
+    response = make_response(jsonify({
+        'cookies': [{cookie: request.cookies[cookie]}
+            for cookie in request.cookies],
+        'message': 'You have followed the crumbs to this endpoint!'
+    }), 200)
+
+    response.set_cookie('mouse','Cookie')
 
     return response
 
